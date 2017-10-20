@@ -1,6 +1,10 @@
 # -*- coding: UTF-8 -*-
-#特征
+
 import numpy as np
+import jieba as jb
+import jieba.analyse
+
+
 
 def get_end_word():
     lst_end_word = ['，', '、', '！', '？', '。', '：', ' ', '；']
@@ -16,8 +20,18 @@ def get_stop_word():
 
 def get_text_info(text):
     # text = long string
-    # 原始文章/去掉停用词文章的长度
+    # 初始化特征字典
     dict_sent = {}
+
+    # 如果文本为空
+    if len(text) == 0:
+        dict_sent = {('old_len','num_sent','max_sent','min_sent','range_sent','mean_sent',
+                   'max_diff_sent','min_diff_sent','range_diff_sent','mean_diff_sent',
+                   'diff_repeat_sent','ratio_repeat_sent','max_repeat_sent','min_repeat_sent',
+                   'range_repeat_sent','mean_repeat_sent'): -9999}
+        return dict_sent
+
+    # 原始文章/去掉停用词文章的长度
     dict_sent['old_len'] = len(text)
     # new_text = filter(lambda x:x not in get_stop_word(), text)
     # dict_sent['new_len'] = len(new_text)
@@ -30,7 +44,7 @@ def get_text_info(text):
     dict_sent['num_sent'] = len(cut_text)
 
     # 原始分句文章句子信息
-    sentences_length = np.array(list(map(lambda x:len(x), cut_text))) # sentences_length = [len(sent1), len(sent2), ..., len(sentN)]
+    sentences_length = map(lambda x:len(x), cut_text) # sentences_length = [len(sent1), len(sent2), ..., len(sentN)]
     dict_sent['max_sent'] = max(sentences_length)
     dict_sent['min_sent'] = min(sentences_length)
     dict_sent['range_sent'] = max(sentences_length) - min(sentences_length)
@@ -61,3 +75,11 @@ def get_text_info(text):
     dict_sent['mean_repeat_sent'] = np.mean(sentences_repeat_length)
 
     return dict_sent
+
+def get_kw_TitleVsText(title, text, topK):
+    assert topK > 0 and topK < 20
+    stop_word = get_stop_word()
+    kw_title = filter(lambda x:x not in stop_word, list(jb.cut(title)))
+    kw_text = filter(lambda x:x[0] not in stop_word, jieba.analyse.extract_tags(text, withWeight=True))[:topK]
+    related_words = filter(lambda x:x[0] in kw_title, kw_text)
+    return np.mean(map(lambda x:x[1], related_words))

@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-#特征
+
 import numpy as np
 
 def get_end_word():

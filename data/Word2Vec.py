@@ -38,14 +38,14 @@ content_model_name = 'vector/content/content_model'
 print('Loading model from [%s]' % title_model_name)
 title_model = Word2Vec.load(title_model_name)
 title_matrix = np.array([title_model[word] for word in (title_model.wv.vocab)])
-title_matrix=np.concatenate((np.zeros((1,title_matrix.shape[1])),title_matrix,np.random.random((1,title_matrix.shape[1]))),axis=0)
+title_matrix=np.concatenate((np.zeros((1,title_matrix.shape[1])),title_matrix,np.random.random((1,title_matrix.shape[1]))/2-0.25),axis=0)
 default_title=title_matrix.shape[0]-1
 title_keys=np.array(list(title_model.wv.vocab.keys()))
 title_dict={}
 for i in range(title_keys.shape[0]):
     title_dict[title_keys[i]]=i+1
 title_df=pd.DataFrame(title_matrix)
-# title_df.to_csv('word2vec/title_matrix.csv',header=False,index=False)
+title_df.to_csv('word2vec/title_matrix.csv',header=False,index=False)
 
 del title_model,title_matrix,title_keys,title_df
 gc.collect()
@@ -53,14 +53,14 @@ gc.collect()
 print('Loading model from [%s]' % content_model_name)
 content_model = Word2Vec.load(content_model_name)
 content_matrix = np.array([content_model[word] for word in (content_model.wv.vocab)])
-content_matrix=np.concatenate((np.zeros((1,content_matrix.shape[1])),content_matrix,np.random.random((1,content_matrix.shape[1]))),axis=0)
+content_matrix=np.concatenate((np.zeros((1,content_matrix.shape[1])),content_matrix,np.random.random((1,content_matrix.shape[1]))/2-0.25),axis=0)
 default_content=content_matrix.shape[0]-1
 content_keys=np.array(list(content_model.wv.vocab.keys()))
 content_dict={}
 for i in range(content_keys.shape[0]):
     content_dict[content_keys[i]]=i+1
 content_df=pd.DataFrame(content_matrix)
-# content_df.to_csv('word2vec/content_matrix.csv',header=False,index=False)
+content_df.to_csv('word2vec/content_matrix.csv',header=False,index=False)
 
 del content_model,content_matrix,content_keys,content_df
 gc.collect()

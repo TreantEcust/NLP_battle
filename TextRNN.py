@@ -18,14 +18,14 @@ class TextRNN():
         input_title = Input((self.title_len,))
         x_title = Embedding(self.title_matrix.shape[0],self.seq_len,weights=[self.title_matrix],
                              input_length=self.title_len,mask_zero=False,trainable=False)(input_title)
-        x_title = Bidirectional(GRU(256, return_sequences=True), merge_mode='concat')(x_title)
+        # x_title = Bidirectional(GRU(256, return_sequences=True), merge_mode='concat')(x_title)
         x_title = Bidirectional(GRU(256, return_sequences=False), merge_mode='concat')(x_title)
 
         #content
         input_content = Input((self.content_len,))
         x_content = Embedding(self.content_matrix.shape[0], self.seq_len, weights=[self.content_matrix],
                                 input_length=self.content_len, mask_zero=False, trainable=False)(input_content)
-        x_content = Bidirectional(GRU(256, return_sequences=True), merge_mode='concat')(x_content)
+        # x_content = Bidirectional(GRU(256, return_sequences=True), merge_mode='concat')(x_content)
         x_content = Bidirectional(GRU(256, return_sequences=False), merge_mode='concat')(x_content)
 
         x = Concatenate()([x_title,x_content])

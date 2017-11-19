@@ -19,40 +19,41 @@ class TextRCNN():
         input_title = Input((self.title_len,))
         x_title_vec = Embedding(self.title_matrix.shape[0],self.seq_len,weights=[self.title_matrix],
                              input_length=self.title_len,mask_zero=False,trainable=False)(input_title)
-        x_title = Bidirectional(GRU(256, return_sequences=True, implementation=2), merge_mode=None)(x_title_vec)
-        x_title = Concatenate(axis=2)([x_title[0], x_title_vec, x_title[1]])
+        x_title = Bidirectional(GRU(64, return_sequences=True, implementation=2), merge_mode=None)(x_title_vec)
+        x_title = Concatenate(axis=2)([x_title[0], x_title[1]])
+        
         x_title1 = Conv1D(1, 4, strides=1, padding='valid', input_shape=(self.title_len, self.seq_len))(x_title)
         x_title1 = BatchNormalization()(x_title1)
         x_title1 = Activation('relu')(x_title1)
         x_title1 = KMaxPooling.KMaxPooling(k=2)(x_title1)
-
+        
         x_title2 = Conv1D(1, 3, strides=1, padding='valid', input_shape=(self.title_len, self.seq_len))(x_title)
         x_title2 = BatchNormalization()(x_title2)
         x_title2 = Activation('relu')(x_title2)
         x_title2 = KMaxPooling.KMaxPooling(k=2)(x_title2)
-
+        
         x_title3 = Conv1D(1, 2, strides=1, padding='valid', input_shape=(self.title_len, self.seq_len))(x_title)
-        x_title3 = BatchNormalization()(x_title3)
-        x_title3 = Activation('relu')(x_title3)
-        x_title3 = KMaxPooling.KMaxPooling(k=2)(x_title3)
+        x_title3 = BatchNormalization()(x_title)
+        x_title3 = Activation('relu')(x_title)
+        x_title3 = KMaxPooling.KMaxPooling(k=2)(x_title)
 
         #content
         input_content = Input((self.content_len,))
         x_content_vec = Embedding(self.content_matrix.shape[0], self.seq_len, weights=[self.content_matrix],
                                 input_length=self.content_len, mask_zero=False, trainable=False)(input_content)
-        x_content = Bidirectional(GRU(256, return_sequences=True,implementation=2), merge_mode=None)(x_content_vec)
-        x_content = Concatenate(axis=2)([x_content[0], x_content_vec, x_content[1]])
-
+        x_content = Bidirectional(GRU(64, return_sequences=True,implementation=2), merge_mode=None)(x_content_vec)
+        x_content = Concatenate(axis=2)([x_content[0], x_content[1]])
+        
         x_content1 = Conv1D(1, 5, strides=1, padding='valid', input_shape=(self.content_len, self.seq_len))(x_content)
         x_content1 = BatchNormalization()(x_content1)
         x_content1 = Activation('relu')(x_content1)
         x_content1 = KMaxPooling.KMaxPooling(k=2)(x_content1)
-
+        
         x_content2 = Conv1D(1, 4, strides=1, padding='valid', input_shape=(self.content_len, self.seq_len))(x_content)
         x_content2 = BatchNormalization()(x_content2)
         x_content2 = Activation('relu')(x_content2)
         x_content2 = KMaxPooling.KMaxPooling(k=2)(x_content2)
-
+        
         x_content3 = Conv1D(1, 3, strides=1, padding='valid', input_shape=(self.content_len, self.seq_len))(x_content)
         x_content3 = BatchNormalization()(x_content3)
         x_content3 = Activation('relu')(x_content3)

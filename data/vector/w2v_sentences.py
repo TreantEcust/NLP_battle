@@ -70,19 +70,18 @@ if not ('trn_word' in dir() and 'evl_word' in dir()):
     del evl_content
     gc.collect()
 
-'''
-print('Title word2vec model ...')
-min_count = 2
-window = 5
-dim = 100
-save_name = 'word2vec_model/title/title_model'
-title_model = model_trn(words=trn_title, min_count=min_count, window=window , dim=dim, save_name=save_name)
-'''
+
+# print('Title word2vec model ...')
+# min_count = 2
+# window = 5
+# dim = 256
+# save_name = 'title256/title_model256'
+# title_model = model_trn(words=trn_title, min_count=min_count, window=window , dim=dim, save_name=save_name)
 
 print('Content word2vec model ...')
 min_count = 5
 window = 5
-dim = 200
-save_name = 'content_200/content_model'
+dim = 256
+save_name = 'content256/content_model256'
 content_model = model_trn(words=trn_content, min_count=min_count, window=window, dim=dim, save_name=save_name)
 

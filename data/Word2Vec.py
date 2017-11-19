@@ -33,8 +33,8 @@ evl_content = [a[2] for a in evl_word]
 del evl_word
 gc.collect()
 
-title_model_name = 'vector/title/title_model'
-content_model_name = 'vector/content/content_model'
+title_model_name = 'vector/title256/title_model256'
+content_model_name = 'vector/content256/content_model256'
 print('Loading model from [%s]' % title_model_name)
 title_model = Word2Vec.load(title_model_name)
 title_matrix = np.array([title_model[word] for word in (title_model.wv.vocab)])
@@ -45,7 +45,7 @@ title_dict={}
 for i in range(title_keys.shape[0]):
     title_dict[title_keys[i]]=i+1
 title_df=pd.DataFrame(title_matrix)
-title_df.to_csv('word2vec/title_matrix.csv',header=False,index=False)
+title_df.to_csv('word2vec/title_matrix256.csv',header=False,index=False)
 
 del title_model,title_matrix,title_keys,title_df
 gc.collect()
@@ -60,7 +60,7 @@ content_dict={}
 for i in range(content_keys.shape[0]):
     content_dict[content_keys[i]]=i+1
 content_df=pd.DataFrame(content_matrix)
-content_df.to_csv('word2vec/content_matrix.csv',header=False,index=False)
+content_df.to_csv('word2vec/content_matrix256.csv',header=False,index=False)
 
 del content_model,content_matrix,content_keys,content_df
 gc.collect()
@@ -97,7 +97,7 @@ for i in tqdm(range(train_id.shape[0])):
         train_label.append(0)
 train_label=np.array(train_label)
 train_id=[np.string_(i) for i in train_id]
-file = h5py.File('train/train_data.h5','w')
+file = h5py.File('train/train_data256.h5','w')
 file.create_dataset('train_id', data = train_id)
 file.create_dataset('train_title', data = train_title)
 file.create_dataset('train_content',data = train_content)
@@ -128,7 +128,7 @@ for i in tqdm(range(eval_id.shape[0])):
         if j==max_content_len-1:
             break
 eval_id=[np.string_(i) for i in eval_id]
-file = h5py.File('eval/eval_data.h5','w')
+file = h5py.File('eval/eval_data256.h5','w')
 file.create_dataset('eval_id', data = eval_id)
 file.create_dataset('eval_title', data = eval_title)
 file.create_dataset('eval_content',data = eval_content)

@@ -4,18 +4,18 @@ from keras.optimizers import *
 import KMaxPooling as KP
 
 
-class TextCNN1():
+class TextCNNInception():
     def __init__(self, title_len=25, content_len=1500, seq_len=100, title_matrix=None, content_matrix=None):
         self.title_len = title_len
         self.content_len = content_len
         self.seq_len = seq_len
         self.title_matrix = title_matrix
         self.content_matrix = content_matrix
-        self.model = self.CNN1_model()
+        self.model = self.CNNInception_model()
         self.optimizer = Adadelta(lr=1.0, rho=0.95, epsilon=1e-06)
         self.model.compile(loss='binary_crossentropy', optimizer=self.optimizer, metrics=['accuracy'])
 
-    def CNN1_model(self):
+    def CNNInception_model(self):
         # title
         input_title = Input((self.title_len,))
         x_title = Embedding(self.title_matrix.shape[0], self.seq_len, weights=[self.title_matrix],

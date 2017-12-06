@@ -14,8 +14,8 @@ class TextConvLSTM():
         self.seq_len=seq_len
         self.title_matrix=title_matrix
         self.content_matrix=content_matrix
-        self.model=self.RNN_LSTM_model()
-        self.optimizer=Adam(lr=0.001, beta_1=0.9, beta_2=0.999, epsilon=1e-08)
+        self.model=self.ConvLSTM_model()
+        self.optimizer = Adadelta(lr=1.0, rho=0.95, epsilon=1e-06)
         self.model.compile(loss='binary_crossentropy',optimizer=self.optimizer,metrics=['accuracy'])
 
     def ConvLSTM_model(self):

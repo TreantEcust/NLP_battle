@@ -21,10 +21,10 @@ class TextAttentionRNN():
         a = Reshape((input_dim, TIME_STEPS))(a)  # this line is not useful. It's just to know which dimension is what.
         a = Dense(TIME_STEPS, activation='softmax')(a)
         if SINGLE_ATTENTION_VECTOR:
-            a = Lambda(lambda x: K.mean(x, axis=1), name='dim_reduction')(a)
+            a = Lambda(lambda x: K.mean(x, axis=1))(a)
             a = RepeatVector(input_dim)(a)
-        a_probs = Permute((2, 1), name='attention_vec')(a)
-        output_attention_mul = merge([inputs, a_probs], name='attention_mul', mode='mul')
+        a_probs = Permute((2, 1))(a)
+        output_attention_mul = merge([inputs, a_probs], mode='mul')
         return output_attention_mul
 
     def Attention_RNN_model(self):

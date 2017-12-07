@@ -1,7 +1,8 @@
 # -*- coding: UTF-8 -*-
 
 
-# 通过sentence_vector = mean(tf-idf*word_vector)的方式生成每篇文章的句向量
+# 把每篇文章当一个corpus，文章中的句子当一篇文章，计算一个corpus内doc的lda矩阵。
+# 这里断句加入了逗号，因为发现逗号隔开的句子也可能存在不同主题。
 import gc
 # import os
 # import re
